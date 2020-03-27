@@ -28,12 +28,13 @@
                         @endcan
                     </div>
                 </div>
-                <div class="container align">
+                <div class="container pb-3">
                     <div class="row">
                         <div class="col-4"></div>
                         <div class="col-5">
                             @can('notClosed', $appeal)
-                                <div class="col-auto">
+                                <div class="col-auto table-active pb-4 py-4">
+                                    <p class="mb-0 text-info text-uppercase text-center">Ответить</p>
                                     <form method="post" action="{{ action('AppealsController@storeFeedback', ['appeal' => $appeal]) }}">
                                         @csrf
                                         @include('appeals.form')
@@ -44,7 +45,7 @@
                         <div class="col-4"></div>
                     </div>
                 </div>
-                <div class="container col-8 text-right">
+                <div class="container col-10 text-right">
                     <div class="row">
                         <div class="col-md">
                             <blockquote class="blockquote text-right">

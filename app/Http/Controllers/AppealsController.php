@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Appeal;
 use App\Feedback;
+use App\Service\AppealFilterService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -14,13 +15,15 @@ class AppealsController extends Controller
         $this->middleware('auth');
     }
 
-    public function index(Appeal $appeal)
+    public function index(Appeal $appeal, AppealFilterService $appealFilterService)
     {
         $appeals = Appeal::with('feedbacks')->latest()->get();
 
-        if(!Auth::user()->isManager()) {
+        if (!Auth::user()->isManager()) {
             $appeals = $appeals->where('author_id', auth()->id());
         }
+
+        $appeals = $appealFilterService->setFilters(\request())->apply($appeals);
 
         return view('index', compact('appeals'));
     }
