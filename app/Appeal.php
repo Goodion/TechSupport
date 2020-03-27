@@ -29,4 +29,9 @@ class Appeal extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function feedbacks()
+    {
+        return $this->hasMany(\App\Feedback::class);
+    }
 }

@@ -6,7 +6,7 @@
 
     <main role="main" class="container">
         <div class="row">
-            <div class="col-md-8 blog-main">
+            <div class="col-md blog-main">
                 <h3 class="pb-4 mb-4 font-italic border-bottom">
                     Заявка № @yield('title')
                 </h3>
@@ -18,7 +18,7 @@
                 </div><!-- /.blog-post -->
                 <div class="container pb-5">
                     <div class="row">
-                        @can('update', $appeal)
+                        @can('notClosed', $appeal)
                             <div class="col-auto">
                                 <form method="post" action="{{ action('AppealsController@close', ['appeal' => $appeal]) }}">
                                     @csrf
@@ -26,6 +26,45 @@
                                 </form>
                             </div>
                         @endcan
+                    </div>
+                </div>
+                <div class="container align">
+                    <div class="row">
+                        <div class="col-4"></div>
+                        <div class="col-5">
+                            @can('notClosed', $appeal)
+                                <div class="col-auto">
+                                    <form method="post" action="{{ action('AppealsController@storeFeedback', ['appeal' => $appeal]) }}">
+                                        @csrf
+                                        @include('appeals.form')
+                                    </form>
+                                </div>
+                            @endcan
+                        </div>
+                        <div class="col-4"></div>
+                    </div>
+                </div>
+                <div class="container col-8 text-right">
+                    <div class="row">
+                        <div class="col-md">
+                            <blockquote class="blockquote text-right">
+                                <h4>Ответы по заявке:</h4>
+                                @forelse($appeal->feedbacks->sortDesc() as $feedback)
+                                    <p class="mb-0 text-info text-uppercase">{{ $feedback->title }}</p>
+                                    <p class="text-small mb-0">{{ $feedback->body }}</p>
+                                    <footer class="blockquote-footer">
+                                        <cite title="Автор">
+                                            {{ $feedback->author->name }}
+                                        </cite>
+                                        <span class="small">
+                                            {{ $feedback->created_at }}
+                                        </span>
+                                    </footer>
+                                @empty
+                                    <p class="text-small mb-0">Нет ответов =(</p>
+                                @endforelse
+                            </blockquote>
+                        </div>
                     </div>
                 </div>
             </div><!-- /.blog-main -->

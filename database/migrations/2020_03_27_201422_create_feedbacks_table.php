@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAppealsTable extends Migration
+class CreateFeedbacksTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,17 +13,17 @@ class CreateAppealsTable extends Migration
      */
     public function up()
     {
-        Schema::create('appeals', function (Blueprint $table) {
+        Schema::create('feedbacks', function (Blueprint $table) {
             $table->id();
             $table->string('title');
             $table->text('body');
             $table->text('file')->nullable();
-            $table->boolean('closed')->default(false);
-            $table->boolean('viewed')->default(false);
             $table->unsignedBigInteger('author_id');
+            $table->unsignedBigInteger('appeal_id');
             $table->timestamps();
 
-            $table->foreign('author_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('appeal_id')->references('id')->on('appeals')->onDelete('cascade');
+            $table->foreign('author_id')->references('id')->on('users');
         });
     }
 
@@ -34,6 +34,6 @@ class CreateAppealsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('appeals');
+        Schema::dropIfExists('feedbacks');
     }
 }

@@ -22,6 +22,11 @@ class AppealPolicy
         return $appeal->author_id == $user->id;
     }
 
+    public function notClosed(User $user, Appeal $appeal)
+    {
+        return $appeal->isNotClosed();
+    }
+
     /**
      * Determine whether the user can update the appeal.
      *

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Appeal;
+use App\Feedback;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,7 +16,7 @@ class AppealsController extends Controller
 
     public function index(Appeal $appeal)
     {
-        $appeals = Appeal::latest()->get();
+        $appeals = Appeal::with('feedbacks')->latest()->get();
 
         if(!Auth::user()->isManager()) {
             $appeals = $appeals->where('author_id', auth()->id());
@@ -42,6 +43,23 @@ class AppealsController extends Controller
         ]));
 
         return redirect('/');
+    }
+
+    public function storeFeedback(Appeal $appeal, Feedback $feedback)
+    {
+        $data = $this->validate(request(), [
+            'title' => 'required',
+            'body' => 'required',
+            'file' => 'file',
+        ]);
+
+        $feedback->fill(array_merge($data, [
+            'author_id' => auth()->id(),
+        ]));
+
+        $appeal->feedbacks()->save($feedback);
+
+        return back();
     }
 
     public function show(Appeal $appeal)
