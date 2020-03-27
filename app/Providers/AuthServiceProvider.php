@@ -21,10 +21,16 @@ class AuthServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(\Illuminate\Contracts\Auth\Access\Gate $gate)
     {
-        $this->registerPolicies();
+        $gate->before(function ($user) {
+            return $user->isManager();
+        });
 
-        //
+        $gate->define('managerPanel', function ($user) {
+            return $user->isManager();
+        });
+
+        $this->registerPolicies();
     }
 }

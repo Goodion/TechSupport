@@ -36,4 +36,11 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function isManager()
+    {
+        if ($this->email == config('config.manager_email')) {
+            return true;
+        }
+    }
 }
