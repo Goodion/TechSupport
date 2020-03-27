@@ -43,4 +43,9 @@ class User extends Authenticatable
             return true;
         }
     }
+
+    public function appeals()
+    {
+        return $this->hasMany(\App\Appeal::class);
+    }
 }
