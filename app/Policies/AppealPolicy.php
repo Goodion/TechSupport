@@ -25,7 +25,10 @@ class AppealPolicy
 
     public function store(User $user)
     {
-        return $user->appeals()->latest()->first()->created_at->lt(Carbon::now()->subDay());
+        if($user->appeals()->get()->isNotEmpty()) {
+            return $user->appeals()->latest()->first()->created_at->lt(Carbon::now()->subDay());
+        }
+        return true;
     }
 
     public function notClosed(User $user, Appeal $appeal)

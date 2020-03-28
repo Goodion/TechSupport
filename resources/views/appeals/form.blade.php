@@ -9,8 +9,8 @@
     <textarea class="form-control" id="appeal_body" name="body">{{ old('body') }}</textarea>
 </div>
 <div class="form-group">
-    <label for="exampleFormControlFile1">Прикрепите файл</label>
-    <input type="file" class="form-control-file" id="exampleFormControlFile1">
+    <label for="fileUpload">Прикрепите файл</label>
+    <input type="file" class="form-control-file" id="fileUpload" name="file">
 </div>
 <hr>
 <button type="submit" class="btn btn-primary">Сохранить</button>

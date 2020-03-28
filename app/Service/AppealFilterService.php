@@ -40,7 +40,7 @@ class AppealFilterService
 
     public function not_closed($value)
     {
-        $this->values = $value->where('closed', 0);
+        $this->values = $value->allOpened();
     }
 
     public function answered($value)

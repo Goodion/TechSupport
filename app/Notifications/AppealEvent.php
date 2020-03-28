@@ -12,18 +12,17 @@ use Illuminate\Notifications\Notification;
 class AppealEvent extends Notification
 {
     use Queueable;
+
     protected $appeal;
-    protected $urlToCreatedAppeal;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct(Appeal $appeal, $urlToCreatedAppeal = '')
+    public function __construct(Appeal $appeal)
     {
         $this->appeal = $appeal;
-        $this->urlToCreatedAppeal = $urlToCreatedAppeal;
     }
 
     /**
@@ -34,6 +33,6 @@ class AppealEvent extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail', TelegramMessage::class];
+        return ['mail'];
     }
 }

@@ -11,6 +11,7 @@ use App\Providers\TelegramMessageServiceProvider;
 use App\Service\AppealFilterService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use MagicLink\Actions\LoginAction;
 use MagicLink\MagicLink;
 
@@ -47,11 +48,17 @@ class AppealsController extends Controller
         $data = $this->validate(request(), [
             'title' => 'required',
             'body' => 'required',
+        ]);
+
+        $this->validate(\request(), [
             'file' => 'file',
         ]);
 
+        $path = \request('file') ? Storage::putFile('files', \request('file')) : '';
+
         $appeal = Appeal::create(array_merge($data, [
             'author_id' => auth()->id(),
+            'file' => $path,
         ]));
 
         $manager = \App\User::where('email', config('config.manager_email'))->first();
@@ -68,11 +75,17 @@ class AppealsController extends Controller
         $data = $this->validate(request(), [
             'title' => 'required',
             'body' => 'required',
+        ]);
+
+        $this->validate(\request(), [
             'file' => 'file',
         ]);
 
+        $path = \request('file') ? Storage::putFile('files', \request('file')) : '';
+
         $feedback->fill(array_merge($data, [
             'author_id' => auth()->id(),
+            'file' => $path,
         ]));
 
         $appeal->feedbacks()->save($feedback);

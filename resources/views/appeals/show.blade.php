@@ -13,7 +13,10 @@
                 <div class="blog-post">
                     <h2 class="blog-post-title">{{ $appeal->title }}</h2>
                     <p class="blog-post-meta">{{ $appeal->created_at }}, автор {{ $appeal->author->name }}</p>
-                    <p>{!! $appeal->body !!}</p>
+                    <p>{{ $appeal->body }}</p>
+                    @if($appeal->file)
+                        <a target="_blank" href="{{ asset('/' . $appeal->file) }}">Вложение</a>
+                    @endif
 
                 </div><!-- /.blog-post -->
                 <div class="container pb-5">
@@ -43,7 +46,7 @@
                             @can(['notClosed', 'accepted'], $appeal)
                                 <div class="col-auto table-active pb-4 py-4">
                                     <p class="mb-0 text-info text-uppercase text-center">Ответить</p>
-                                    <form method="post" action="{{ action('AppealsController@storeFeedback', ['appeal' => $appeal]) }}">
+                                    <form method="post" action="{{ action('AppealsController@storeFeedback', ['appeal' => $appeal]) }}" enctype="multipart/form-data">
                                         @csrf
                                         @include('appeals.form')
                                     </form>
@@ -61,13 +64,18 @@
                                 @forelse($appeal->feedbacks->sortByDesc('created_at') as $feedback)
                                     <p class="mb-0 text-info text-uppercase">{{ $feedback->title }}</p>
                                     <p class="text-small mb-0">{{ $feedback->body }}</p>
-                                    <footer class="blockquote-footer">
+                                    <footer class="blockquote-footer pb-3">
                                         <cite title="Автор">
                                             {{ $feedback->author->name }}
                                         </cite>
                                         <span class="small">
                                             {{ $feedback->created_at }}
                                         </span>
+                                        <p class="small">
+                                            @if($feedback->file)
+                                                <a target="_blank" href="{{ asset('/' . $appeal->file) }}">Вложение</a>
+                                            @endif
+                                        </p>
                                     </footer>
                                 @empty
                                     <p class="text-small mb-0">Нет ответов =(</p>
