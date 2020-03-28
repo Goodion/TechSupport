@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Appeal;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class AppealPolicy
@@ -20,6 +21,11 @@ class AppealPolicy
     public function view(User $user, Appeal $appeal)
     {
         return $appeal->author_id == $user->id;
+    }
+
+    public function store(User $user)
+    {
+        return $user->appeals()->latest()->first()->created_at->lt(Carbon::now()->subDay());
     }
 
     public function notClosed(User $user, Appeal $appeal)

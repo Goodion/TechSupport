@@ -40,6 +40,8 @@ class AppealsController extends Controller
 
     public function store()
     {
+        $this->authorize('store', Appeal::class);
+
         $data = $this->validate(request(), [
             'title' => 'required',
             'body' => 'required',

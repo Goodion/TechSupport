@@ -46,7 +46,7 @@ class User extends Authenticatable
 
     public function appeals()
     {
-        return $this->hasMany(\App\Appeal::class);
+        return $this->hasMany(\App\Appeal::class, 'author_id');
     }
 
     public function acceptedAppeals()
