@@ -7,7 +7,7 @@ return [
 
     'telegramMessage' => [
         'token' => env('TELEGRAM_TOKEN'),
-        'admin_chatid' => env('TELEGRAM_ADMIN_CHATID'),
+        'manager_chatid' => env('TELEGRAM_MANAGER_CHATID'),
         'curlopt_proxy' => env('CURLOPT_PROXY'),
         'curlopt_proxyuserpwd' => env('CURLOPT_PROXYUSERPWD'),
     ],

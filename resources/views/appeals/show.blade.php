@@ -40,7 +40,7 @@
                     <div class="row">
                         <div class="col-4"></div>
                         <div class="col-5">
-                            @can('notClosed', $appeal)
+                            @can(['notClosed', 'accepted'], $appeal)
                                 <div class="col-auto table-active pb-4 py-4">
                                     <p class="mb-0 text-info text-uppercase text-center">Ответить</p>
                                     <form method="post" action="{{ action('AppealsController@storeFeedback', ['appeal' => $appeal]) }}">
@@ -58,7 +58,7 @@
                         <div class="col-md">
                             <blockquote class="blockquote text-right">
                                 <h4>Ответы по заявке:</h4>
-                                @forelse($appeal->feedbacks->sortDesc() as $feedback)
+                                @forelse($appeal->feedbacks->sortByDesc('created_at') as $feedback)
                                     <p class="mb-0 text-info text-uppercase">{{ $feedback->title }}</p>
                                     <p class="text-small mb-0">{{ $feedback->body }}</p>
                                     <footer class="blockquote-footer">

@@ -27,9 +27,9 @@ class AppealPolicy
         return $appeal->isNotClosed();
     }
 
-    public function notAccepted(User $user, Appeal $appeal)
+    public function accepted(User $user, Appeal $appeal)
     {
-        return $appeal->isNotAccepted();
+        return ! $appeal->isNotAccepted();
     }
 
     /**

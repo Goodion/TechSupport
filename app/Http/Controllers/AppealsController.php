@@ -4,9 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Appeal;
 use App\Feedback;
+use App\Notifications\AppealCreated;
+use App\Notifications\AppealFeedbacked;
+use App\Notifications\AppealClosed;
+use App\Providers\TelegramMessageServiceProvider;
 use App\Service\AppealFilterService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+
 
 class AppealsController extends Controller
 {
@@ -45,6 +50,9 @@ class AppealsController extends Controller
             'author_id' => auth()->id(),
         ]));
 
+        $manager = \App\User::where('email', config('config.manager_email'))->first();
+        $manager->notify(new AppealCreated($appeal));
+
         return redirect('/');
     }
 
@@ -61,6 +69,13 @@ class AppealsController extends Controller
         ]));
 
         $appeal->feedbacks()->save($feedback);
+
+        if (Auth::user()->isManager()) {
+            $user = \App\User::where('id', $appeal->author->id)->first();
+            $user->notify(new AppealFeedbacked($appeal, $feedback));
+        } else {
+            $appeal->manager()->first()->notify(new AppealFeedbacked($appeal, $feedback));
+        }
 
         return back();
     }
@@ -104,9 +119,20 @@ class AppealsController extends Controller
     {
         $this->authorize('close', $appeal);
 
+        if (Auth::user()->isManager()) {
+            Auth::user()->acceptedAppeals()->syncWithoutDetaching($appeal);
+        }
+
         $appeal->update([
             'closed' => true,
         ]);
+
+        $user = \App\User::where('id', $appeal->author->id)->first();
+        $user->notify(new AppealClosed($appeal));
+
+        if (! $appeal->isNotAccepted()) {
+            $appeal->manager()->first()->notify(new AppealClosed($appeal));
+        }
 
         return redirect('/');
     }
