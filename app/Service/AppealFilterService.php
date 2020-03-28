@@ -14,7 +14,11 @@ class AppealFilterService
 
     public function setFilters(Request $request)
     {
-        $this->filters = $request->filters;
+        $filters = collect($request->all())->filter(function ($value, $key) {
+            return mb_stripos($key, 'filters') !== false ?? $value;
+        })->values()->collapse()->toArray();
+
+        $this->filters = $filters;
         return $this;
     }
 
@@ -38,15 +42,32 @@ class AppealFilterService
         $this->values = $value->where('viewed', 0);
     }
 
-    public function not_closed($value)
+    public function viewed($value)
     {
-        $this->values = $value->allOpened();
+        $this->values = $value->where('viewed', 1);
+    }
+
+    public function notClosed($value)
+    {
+        $this->values = $value->where('closed', 0);
+    }
+
+    public function closed($value)
+    {
+        $this->values = $value->where('closed', 1);
     }
 
     public function answered($value)
     {
         $this->values = $value->filter(function ($item) {
             return $item->feedbacks->isNotEmpty();
+        })->all();
+    }
+
+    public function notAnswered($value)
+    {
+        $this->values = $value->filter(function ($item) {
+            return $item->feedbacks->isEmpty();
         })->all();
     }
 }
