@@ -1,4 +1,4 @@
-@if(Gate::allows('appealsFilter'))
+@if(Gate::allows('manager'))
     <div class="container">
         <div class="row">
             <div class="col-3"></div>
@@ -11,9 +11,9 @@
 
                         <div class="form-check">
                             <div class="col-3">
-                                <input class="form-check-input" type="checkbox" name="filters[]" value="viewed" @if(is_array(request()->filters) && in_array('viewed', request()->filters)) checked @endif>
-                                <label class="form-check-label" for="viewed">
-                                    Просмотренные
+                                <input class="form-check-input" type="checkbox" name="filters[]" value="unViewed" @if(is_array(request()->filters) && in_array('unViewed', request()->filters)) checked @endif>
+                                <label class="form-check-label" for="unViewed">
+                                    Непросмотренные
                                 </label>
                             </div>
 

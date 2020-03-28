@@ -48,4 +48,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(\App\Appeal::class);
     }
+
+    public function acceptedAppeals()
+    {
+        return $this->belongsToMany(\App\Appeal::class);
+    }
 }

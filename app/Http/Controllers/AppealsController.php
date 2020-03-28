@@ -69,6 +69,10 @@ class AppealsController extends Controller
     {
         $this->authorize('view', $appeal);
 
+        if (Auth::user()->isManager()) {
+            $appeal->update(['viewed' => true]);
+        }
+
         return view('appeals.show', compact('appeal'));
     }
 
@@ -105,5 +109,16 @@ class AppealsController extends Controller
         ]);
 
         return redirect('/');
+    }
+
+    public function accept(Appeal $appeal)
+    {
+        $this->authorize('view', $appeal);
+
+        if (Auth::user()->isManager()) {
+            Auth::user()->acceptedAppeals()->attach($appeal);
+        }
+
+        return back();
     }
 }

@@ -33,9 +33,9 @@ class AppealFilterService
         return $this->values;
     }
 
-    public function viewed($value)
+    public function unViewed($value)
     {
-        $this->values = $value->where('viewed', 1);
+        $this->values = $value->where('viewed', 0);
     }
 
     public function not_closed($value)

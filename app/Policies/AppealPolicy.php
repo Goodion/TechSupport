@@ -27,6 +27,11 @@ class AppealPolicy
         return $appeal->isNotClosed();
     }
 
+    public function notAccepted(User $user, Appeal $appeal)
+    {
+        return $appeal->isNotAccepted();
+    }
+
     /**
      * Determine whether the user can update the appeal.
      *

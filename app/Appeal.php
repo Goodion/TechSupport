@@ -11,7 +11,12 @@ class Appeal extends Model
 
     public function isNotClosed()
     {
-        return (bool)! $this->closed;
+        return (bool) ! $this->closed;
+    }
+
+    public function isNotAccepted()
+    {
+        return (bool) ! $this->manager->isNotEmpty();
     }
 
     public function newCollection(array $models =[])
@@ -33,5 +38,10 @@ class Appeal extends Model
     public function feedbacks()
     {
         return $this->hasMany(\App\Feedback::class);
+    }
+
+    public function manager()
+    {
+        return $this->belongsToMany(\App\User::class);
     }
 }

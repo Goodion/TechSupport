@@ -28,7 +28,7 @@ class AuthServiceProvider extends ServiceProvider
             return $user->isManager();
         });
 
-        $gate->define('appealsFilter', function ($user) {
+        $gate->define('manager', function ($user) {
             return $user->isManager();
         });
 

@@ -18,14 +18,22 @@
                 </div><!-- /.blog-post -->
                 <div class="container pb-5">
                     <div class="row">
-                        @can('notClosed', $appeal)
+                        @if($appeal->isNotclosed())
                             <div class="col-auto">
                                 <form method="post" action="{{ action('AppealsController@close', ['appeal' => $appeal]) }}">
                                     @csrf
                                     <button type="submit" class="btn btn btn-secondary">Закрыть заявку</button>
                                 </form>
                             </div>
-                        @endcan
+                        @endif
+                        @if(Gate::allows('manager') && $appeal->isNotAccepted())
+                            <div class="col-auto">
+                                <form method="post" action="{{ action('AppealsController@accept', ['appeal' => $appeal]) }}">
+                                    @csrf
+                                    <button type="submit" class="btn btn btn-success">Принять заявку</button>
+                                </form>
+                            </div>
+                        @endif
                     </div>
                 </div>
                 <div class="container pb-3">
