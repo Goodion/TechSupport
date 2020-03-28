@@ -11,6 +11,8 @@ use App\Providers\TelegramMessageServiceProvider;
 use App\Service\AppealFilterService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use MagicLink\Actions\LoginAction;
+use MagicLink\MagicLink;
 
 
 class AppealsController extends Controller
@@ -53,7 +55,10 @@ class AppealsController extends Controller
         ]));
 
         $manager = \App\User::where('email', config('config.manager_email'))->first();
-        $manager->notify(new AppealCreated($appeal));
+        $urlToCreatedAppeal = MagicLink::create(
+            new LoginAction($manager, redirect('/appeals/' . $appeal->id))
+            )->url;
+        $manager->notify(new AppealCreated($appeal, $urlToCreatedAppeal));
 
         return redirect('/');
     }

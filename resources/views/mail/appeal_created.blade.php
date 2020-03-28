@@ -4,7 +4,7 @@
 
 {{ $appeal->body }}
 
-@component('mail::button', ['url' => 'http://techsupport.site/appeals/'. $appeal->id])
+@component('mail::button', ['url' => $urlToCreatedAppeal])
 Перейти к заявке
 @endcomponent
 

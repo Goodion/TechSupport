@@ -16,7 +16,7 @@ class AppealCreated extends AppealEvent
 
     public function toMail($notifiable)
     {
-        return (new MailMessage)->markdown('mail.appeal_created', ['appeal' => $this->appeal])
+        return (new MailMessage)->markdown('mail.appeal_created', ['appeal' => $this->appeal, 'urlToCreatedAppeal' => $this->urlToCreatedAppeal])
             ->subject('Создана новая заявка.');
     }
 

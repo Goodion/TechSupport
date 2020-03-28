@@ -13,15 +13,17 @@ class AppealEvent extends Notification
 {
     use Queueable;
     protected $appeal;
+    protected $urlToCreatedAppeal;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct(Appeal $appeal)
+    public function __construct(Appeal $appeal, $urlToCreatedAppeal = '')
     {
         $this->appeal = $appeal;
+        $this->urlToCreatedAppeal = $urlToCreatedAppeal;
     }
 
     /**
